@@ -71,10 +71,5 @@ ShowDoc is a tool greatly applicable for an IT team to share documents online. I
 
  ShowDoc is issued complying with Apache2 Open Source License, and it is for free use. 
  
- Copyright ©  star7th 
- 
- 
- E-mail: xing7th#gmail.com (change # into @) 
- 
  All rights reserved. 
  
