@@ -1,5 +1,7 @@
 <?php
 namespace Api\Controller;
+use http\Env\Request;
+use Think\Cache;
 use Think\Controller;
 use Think\Log;
 
@@ -7,7 +9,7 @@ use Think\Log;
     通过注释生成api文档
  */
 class FromCommentsController extends BaseController {
-
+    
     public function generate(){
         //return ;
         header( 'Content-Type:text/html;charset=utf-8 ');
@@ -21,6 +23,7 @@ class FromCommentsController extends BaseController {
             echo "\napi_key或者api_token不匹配\n\n";
             return false;
         }
+        
         $content = str_replace("_this_and_change_", "&", $content);
         $p = "|/\*\*([\s\S]*)\*/|U";
         preg_match_all($p, $content , $matches) ;
@@ -36,7 +39,7 @@ class FromCommentsController extends BaseController {
         }else{
             echo "失败";
         }
-
+        
     }
 
     private function generate_one($item_id,$content){
@@ -45,6 +48,7 @@ class FromCommentsController extends BaseController {
         $page_content = json_encode($this->clearContent($array));
         $cat_name = $array['cat_name'];
         $s_number = $array['s_number'] ? $array['s_number'] : 99;
+        
         $page_id = D("Page")->update_by_content($item_id,$page_title,$page_content,$cat_name,$s_number);
         if ($page_id) {
             $ret = D("Page")->where(" page_id = '$page_id' ")->find();
@@ -61,9 +65,9 @@ class FromCommentsController extends BaseController {
         $info["from"] = "runapi";
         $info["type"] = "api";
         $info["title"] = $content["title"];
-        $info["description"] = $content["用户登录"];
+        $info["description"] = $content["description"];
         $info["method"] = $content["method"];
-        $info["url"] = $content["url"];
+        $info["url"] = I("pro_host").$content["url"];
         $info["remark"] = $content["remark"];
     
         $result["request"]["params"]["mode"] = "urlencoded";

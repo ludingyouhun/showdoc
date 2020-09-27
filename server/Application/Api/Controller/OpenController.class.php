@@ -19,7 +19,6 @@ class OpenController extends BaseController {
             $this->sendError(10306);
             return false;
         }
-
         //兼容之前的cat_name_sub参数
         if ($cat_name_sub) {
             $cat_name = $cat_name .'/'.$cat_name_sub ;
@@ -138,5 +137,12 @@ class OpenController extends BaseController {
         return $tables;
     }
 
-
+    public function delDoc(){
+        header( 'Content-Type:text/html;charset=utf-8 ');
+        $api_key = I("api_key");
+        $api_token = I("api_token");
+        $item_id = D("ItemToken")->check($api_key , $api_token);
+        D("Page")->where("item_id",$item_id)->delete();
+        D("Catalog")->where("item_id",$item_id)->delete();
+    }
 }
